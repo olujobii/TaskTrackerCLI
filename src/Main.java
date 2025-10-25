@@ -1,5 +1,8 @@
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args) {
+        TaskManager taskManager = new TaskManager(new ArrayList<Task>());
 
         if(args.length == 0){
             System.out.println("No arguments passed, program shutting down");
@@ -8,22 +11,14 @@ public class Main {
 
         switch(args[0]){
             case "add":
+                taskManager.addTask(new Task(args[1],"todo"));
                 System.out.println("Task added successfully");
                 break;
             case "delete":
                 System.out.println("Deleted successfully");
                 break;
-            case "update":
-                System.out.println("Updated successfully");
-                break;
-            case "mark-in-progress":
-                System.out.println("Mark In progress");
-                break;
-            case "mark-done":
-                System.out.println("Mark done");
-                break;
             case "list":
-                System.out.println("List");
+                System.out.println("listing task");
                 break;
             default:
                 System.out.println("Not a valid command");

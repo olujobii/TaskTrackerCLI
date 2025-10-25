@@ -1,8 +1,38 @@
-public class Task {
-    private int id;
-    private int description;
-    private String status;
-    private String createdAt;
-    private String updatedAt;
+import java.time.LocalDateTime;
 
+public class Task {
+    public static int count = 1;
+    private int id;
+    private String description;
+    private String status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+
+    public Task(String description, String status){
+        this.description = description;
+        this.status = status;
+        this.id = count;
+        count++;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }
