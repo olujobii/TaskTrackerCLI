@@ -1,5 +1,7 @@
 ### IntelliJ IDEA ###
 out/
+src/*.json
+src/*.class
 !**/src/main/**/out/
 !**/src/test/**/out/
 

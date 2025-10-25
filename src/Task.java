@@ -1,7 +1,7 @@
 import java.time.LocalDateTime;
 
 public class Task {
-    public static int count = 1;
+    public static int count = 0;
     private int id;
     private String description;
     private String status;
@@ -12,8 +12,7 @@ public class Task {
     public Task(String description, String status){
         this.description = description;
         this.status = status;
-        this.id = count;
-        count++;
+        this.id = ++count;
     }
 
     public String getDescription() {
