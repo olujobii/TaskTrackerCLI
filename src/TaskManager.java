@@ -13,6 +13,8 @@ public class TaskManager {
         taskList.add(new Task("Iron","todo"));
     }
 
+
+    //Add Task
     public void addTask(String[] args){
         for(int i = 1 ; i < args.length ; i++){
             Task task = new Task(args[i],"todo");
@@ -21,6 +23,7 @@ public class TaskManager {
         }
     }
 
+    //Delete task
     public void deleteTask(String num){
         try{
             int id = Integer.parseInt(num);
@@ -42,6 +45,7 @@ public class TaskManager {
         }
     }
 
+    //List task
     public void listTask(){
         if(taskList.isEmpty()){
             System.out.println("No task has been created yet.");
@@ -57,6 +61,49 @@ public class TaskManager {
         }
     }
 
+    //Set status to in-progress
+    public void markTaskAsInProgress(String num){
+        try{
+            int id = Integer.parseInt(num);
+            if(taskList.isEmpty()){
+                System.out.println("No task has been created yet.");
+                return;
+            }
+
+            if(id <= 0 || id > taskList.size())
+                System.out.println("Task does not exist.");
+            else{
+                int index = id - 1;
+                Task task = taskList.get(index);
+                task.setStatus("in-progress");
+                System.out.println("Task updated successfully.");
+            }
+        }catch(NumberFormatException e){
+            System.out.println("Invalid ID passed. ID must be a number");
+        }
+    }
+
+    //Set status to done
+    public void markTaskAsDone(String num){
+        try{
+            int id = Integer.parseInt(num);
+            if(taskList.isEmpty()){
+                System.out.println("No task has been created yet.");
+                return;
+            }
+
+            if(id <= 0 || id > taskList.size())
+                System.out.println("Task does not exist.");
+            else{
+                int index = id - 1;
+                Task task = taskList.get(index);
+                task.setStatus("done");
+                System.out.println("Task updated successfully.");
+            }
+        }catch(NumberFormatException e){
+            System.out.println("Invalid ID passed. ID must be a number");
+        }
+    }
     public void saveTaskToJsonFile(){
         try{
             if(!Files.exists(path)){
@@ -79,6 +126,7 @@ public class TaskManager {
             sb.append("]");
             String jsonContent = sb.toString();
             Files.writeString(path,jsonContent);
+            
         }catch(IOException e){
             e.printStackTrace();
         }

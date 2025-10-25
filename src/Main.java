@@ -14,6 +14,12 @@ public class Main {
             case "delete":
                 taskManager.deleteTask(args[1]);
                 break;
+            case "mark-in-progress":
+                taskManager.markTaskAsInProgress(args[1]);
+                break;
+            case "mark-done":
+                taskManager.markTaskAsDone(args[1]);
+                break;
             case "list":
                 taskManager.listTask();
                 break;
