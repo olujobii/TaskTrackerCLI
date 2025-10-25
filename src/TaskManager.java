@@ -68,7 +68,7 @@ public class TaskManager {
             for(int i = 0 ; i < taskList.size() ; i++){
                 Task task = taskList.get(i);
                 sb.append("\t{\n");
-                sb.append("\t\t\"id\": \""+task.getId()+"\",\n");
+                sb.append("\t\t\"id\": "+task.getId()+",\n");
                 sb.append("\t\t\"description\": \""+task.getDescription()+"\",\n");
                 sb.append("\t\t\"status\": \""+task.getStatus()+"\"\n");
                 if(taskList.size() - 1 == i)
