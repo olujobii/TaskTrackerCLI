@@ -1,33 +1,14 @@
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = new TaskManager(new ArrayList<Task>());
+        ConsoleUI consoleUI = new ConsoleUI(taskManager,args);
 
-        if(args.length == 0){
-            System.out.println("No arguments passed, program shutting down");
+        if(args.length == 0) {
+            System.out.println("Incorrect argument passed");
             return;
         }
-
-        switch(args[0]){
-            case "add":
-                taskManager.addTask(args);
-                break;
-            case "delete":
-                taskManager.deleteTask(args[1]);
-                break;
-            case "mark-in-progress":
-                taskManager.markTaskAsInProgress(args[1]);
-                break;
-            case "mark-done":
-                taskManager.markTaskAsDone(args[1]);
-                break;
-            case "list":
-                taskManager.listTask();
-                break;
-            default:
-                System.out.println("Not a valid command");
-                break;
-        }
-
-        taskManager.saveTaskToJsonFile();
+        consoleUI.startApplication();
     }
 }
