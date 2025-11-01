@@ -1,24 +1,23 @@
+package app;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class TaskManager {
+class TaskManager {
     private ArrayList<Task> taskList;
 
-    public TaskManager(ArrayList<Task> taskList) {
+    protected TaskManager(ArrayList<Task> taskList) {
         this.taskList = taskList;
-        taskList.add(new Task("Wash the car","todo", LocalDateTime.now(),LocalDateTime.now()));
-        taskList.add(new Task("Wash the car","todo", LocalDateTime.now(),LocalDateTime.now()));
-        taskList.add(new Task("Wash the car","in-progress", LocalDateTime.now(),LocalDateTime.now()));
     }
 
-    public void addTask(String[] tasks){
+    protected void addTask(String[] tasks){
         for(int i = 1 ; i < tasks.length ; i++){
             String description = tasks[i];
             taskList.add(new Task(description,"todo", LocalDateTime.now(),LocalDateTime.now()));
         }
     }
 
-    public boolean deleteTask(String descriptionId) throws NumberFormatException{
+    protected boolean deleteTask(String descriptionId) throws NumberFormatException{
         int id = Integer.parseInt(descriptionId);
         if(id <= 0 || id > taskList.size())
             return false;
@@ -26,12 +25,18 @@ public class TaskManager {
         int index = id - 1;
         Task removeTask = taskList.get(index);
 
-        System.out.println("Task Deleted Successfully: "+removeTask.getDescription());
+        System.out.println("app.Task Deleted Successfully: "+removeTask.getDescription());
         taskList.remove(index);
+        //Update task ID of others after removal
+        for(int i = index ; i < taskList.size(); i ++){
+            Task task = taskList.get(i);
+            int newId = i + 1;
+            task.setId(newId);
+        }
         return true;
     }
 
-    public boolean updateTaskDescription(String descriptionId,String newDescription) throws NumberFormatException{
+    protected boolean updateTaskDescription(String descriptionId,String newDescription) throws NumberFormatException{
         int id = Integer.parseInt(descriptionId);
         if(id <= 0 || id > taskList.size())
             return false;
@@ -42,7 +47,7 @@ public class TaskManager {
         updateTaskDescription.setUpdatedAt(LocalDateTime.now());
         return true;
     }
-    public boolean taskInProgress(String description) throws NumberFormatException{
+    protected boolean taskInProgress(String description) throws NumberFormatException{
         int id = Integer.parseInt(description);
         if(id <= 0 || id > taskList.size())
             return false;
@@ -53,7 +58,7 @@ public class TaskManager {
         return true;
     }
 
-    public boolean taskDone(String description) throws NumberFormatException{
+    protected boolean taskDone(String description) throws NumberFormatException{
         int id = Integer.parseInt(description);
         if(id <= 0 || id > taskList.size())
             return false;
@@ -64,7 +69,7 @@ public class TaskManager {
         return true;
     }
 
-    public ArrayList<Task> getTaskList() {
+    protected ArrayList<Task> getTaskList() {
         return taskList;
     }
 

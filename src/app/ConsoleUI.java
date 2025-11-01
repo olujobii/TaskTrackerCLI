@@ -1,7 +1,7 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+package app;
+
+import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +10,76 @@ public class ConsoleUI {
     private String[] args;
     private File file;
 
-    public ConsoleUI(TaskManager taskManager, String[] args) {
-        this.taskManager = taskManager;
-        this.file = new File("taskFile.json");
+    public ConsoleUI(String[] args) {
+        this.file = new File("taskFile.json"); //Creating file
+        this.taskManager = new TaskManager(loadTaskFromJsonFile());
         this.args = args;
     }
 
+    private ArrayList<Task> loadTaskFromJsonFile(){
+        ArrayList<Task> taskFromJsonFile = new ArrayList<>();
+
+        if(!file.exists() || file.length() == 0){
+            return taskFromJsonFile;
+        }
+
+        //Read file from JSON
+        try(FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader)){
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while((line = bufferedReader.readLine()) != null){
+                sb.append(line.trim());
+            }
+
+            String content = sb.substring(1,sb.length() -1); // To remove [ ,] braces.
+            content = content.substring(1,content.length() - 1)
+                    .replace("{","").trim(); //Removes outer { and } and also replaces other {
+            String[] contentArray = content.split("},");
+
+            for(String individualTask : contentArray){
+                Task addTask = getTask(individualTask);
+                taskFromJsonFile.add(addTask);
+            }
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return taskFromJsonFile;
+    }
+
+    private static Task getTask(String individualTask) {
+        String[] parts = individualTask.split(",");
+        int id = 0;
+        String description = "";
+        String status = "";
+        LocalDateTime createdAt = null;
+        LocalDateTime updatedAt = null;
+        for(String task : parts){
+            String[] keyValue = task.split(":" , 2);
+            String key = keyValue[0].replace("\"", "").trim();
+            String value = keyValue[1].replace("\"", "").trim();
+            switch(key){
+                case "id":
+                    id = Integer.parseInt(value);
+                    break;
+                case "description":
+                    description = value;
+                    break;
+                case "status":
+                    status = value;
+                    break;
+                case "createdAt":
+                    createdAt = LocalDateTime.parse(value);
+                    break;
+                case "updatedAt":
+                    updatedAt = LocalDateTime.parse(value);
+                    break;
+            }
+        }
+        Task addTask = new Task(id,description,status,createdAt,updatedAt);
+        return addTask;
+    }
 
     public void startApplication(){
         String command = args[0];
@@ -84,7 +148,6 @@ public class ConsoleUI {
                 System.out.println("ID does not exist");
             } else {
                 System.out.println("Task Updated Successfully");
-                listTasks();
             }
         }catch(NumberFormatException e){
             System.out.println("Invalid ID");
@@ -102,7 +165,6 @@ public class ConsoleUI {
                 System.out.println("ID does not exist");
             } else {
                 System.out.println("Task Updated Successfully");
-                listTasks();
             }
         }catch(NumberFormatException e){
             System.out.println("Invalid ID");
@@ -130,7 +192,6 @@ public class ConsoleUI {
             listAllInProgressTasks(tasks);
             return;
         }
-
         System.out.println("Usage: <list>");
         System.out.println("Usage: <list> <todo>");
         System.out.println("Usage: <list> <done>");
@@ -252,4 +313,6 @@ public class ConsoleUI {
         sb.append("]");
         return sb;
     }
+
+
 }
