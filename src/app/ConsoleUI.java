@@ -48,7 +48,7 @@ public class ConsoleUI {
         return taskFromJsonFile;
     }
 
-    private static Task getTask(String individualTask) {
+    private Task getTask(String individualTask) {
         String[] parts = individualTask.split(",");
         int id = 0;
         String description = "";
