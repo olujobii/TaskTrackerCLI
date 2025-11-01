@@ -43,7 +43,7 @@ public class ConsoleUI {
             }
 
         }catch(IOException e){
-            e.printStackTrace();
+            System.err.println("Could not open file");
         }
         return taskFromJsonFile;
     }
@@ -77,8 +77,7 @@ public class ConsoleUI {
                     break;
             }
         }
-        Task addTask = new Task(id,description,status,createdAt,updatedAt);
-        return addTask;
+        return new Task(id,description,status,createdAt,updatedAt);
     }
 
     public void startApplication(){
@@ -290,7 +289,7 @@ public class ConsoleUI {
             String jsonContent = sb.toString();
             bufferedWriter.write(jsonContent);
         }catch (IOException e){
-            e.printStackTrace();
+            System.err.println("File operation failed");
         }
     }
 
