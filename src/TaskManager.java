@@ -1,14 +1,11 @@
-import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class TaskManager {
     private ArrayList<Task> taskList;
-    private File file;
 
     public TaskManager(ArrayList<Task> taskList) {
         this.taskList = taskList;
-        this.file = new File("taskFile.json");
         taskList.add(new Task("Wash the car","todo", LocalDateTime.now(),LocalDateTime.now()));
         taskList.add(new Task("Wash the car","todo", LocalDateTime.now(),LocalDateTime.now()));
         taskList.add(new Task("Wash the car","in-progress", LocalDateTime.now(),LocalDateTime.now()));
@@ -42,6 +39,7 @@ public class TaskManager {
         int index = id - 1;
         Task updateTaskDescription = taskList.get(index);
         updateTaskDescription.setDescription(newDescription);
+        updateTaskDescription.setUpdatedAt(LocalDateTime.now());
         return true;
     }
     public boolean taskInProgress(String description) throws NumberFormatException{
@@ -69,4 +67,5 @@ public class TaskManager {
     public ArrayList<Task> getTaskList() {
         return taskList;
     }
+
 }

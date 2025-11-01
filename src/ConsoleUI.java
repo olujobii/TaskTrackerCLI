@@ -1,12 +1,18 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConsoleUI {
     private TaskManager taskManager;
     private String[] args;
+    private File file;
 
     public ConsoleUI(TaskManager taskManager, String[] args) {
         this.taskManager = taskManager;
+        this.file = new File("taskFile.json");
         this.args = args;
     }
 
@@ -45,7 +51,6 @@ public class ConsoleUI {
                 System.out.println("ID does not exist");
             }else{
                 System.out.println("Description updated successfully");
-                listTasks();
             }
         }catch(NumberFormatException e){
             System.out.println("Not a valid ID");
@@ -209,5 +214,42 @@ public class ConsoleUI {
         }
     }
 
-    public void saveTaskToJsonFile(){}
+    public void saveTaskToJsonFile(){
+        ArrayList<Task> taskList = taskManager.getTaskList();
+
+        if(taskList.isEmpty()){
+            return;
+        }
+
+        try(FileWriter fileWriter = new FileWriter(file);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){
+
+            //Parsing to JSON
+            StringBuilder sb = getStringBuilder(taskList);
+            String jsonContent = sb.toString();
+            bufferedWriter.write(jsonContent);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private StringBuilder getStringBuilder(ArrayList<Task> taskList){
+        StringBuilder sb = new StringBuilder();
+        sb.append("[\n");
+        for(int i = 0 ; i < taskList.size() ; i++){
+            Task task = taskList.get(i);
+            sb.append("\t{\n");
+            sb.append("\t\t\"id\": "+task.getId()+",\n");
+            sb.append("\t\t\"description\": \""+task.getDescription()+"\",\n");
+            sb.append("\t\t\"status\": \""+task.getStatus()+"\",\n");
+            sb.append("\t\t\"createdAt\": \""+task.getCreatedAt()+"\",\n");
+            sb.append("\t\t\"updatedAt\": \""+task.getUpdatedAt()+"\"\n");
+            if(taskList.size() - 1 == i)
+                sb.append("\t}\n");
+            else
+                sb.append("\t},\n");
+        }
+        sb.append("]");
+        return sb;
+    }
 }

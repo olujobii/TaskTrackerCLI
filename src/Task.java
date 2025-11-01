@@ -41,6 +41,10 @@ public class Task {
         return createdAt;
     }
 
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }

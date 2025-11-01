@@ -10,5 +10,6 @@ public class Main {
             return;
         }
         consoleUI.startApplication();
+        consoleUI.saveTaskToJsonFile();
     }
 }
