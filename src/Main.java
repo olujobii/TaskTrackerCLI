@@ -6,7 +6,7 @@ public class Main {
         ConsoleUI consoleUI = new ConsoleUI(taskManager,args);
 
         if(args.length == 0) {
-            System.out.println("Incorrect argument passed");
+            System.out.println("No argument passed");
             return;
         }
         consoleUI.startApplication();

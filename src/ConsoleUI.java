@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class ConsoleUI {
     private TaskManager taskManager;
     private String[] args;
@@ -12,11 +15,11 @@ public class ConsoleUI {
         String command = args[0];
         switch(command){
             case "add" -> handleAdd();
-            case "update" -> handleUpdate();
+            case "update" -> handleUpdatedDescription();
             case "delete" -> handleDelete();
             case "mark-in-progress" -> handleMarkInProgress();
             case "mark-done" -> handleMarkDone();
-            case "list" -> listAllTasks();
+            case "list" -> listTasks();
             default -> System.out.println("Incorrect command");
         }
     }
@@ -31,12 +34,22 @@ public class ConsoleUI {
 
     }
 
-    private void handleUpdate(){
+    private void handleUpdatedDescription(){
         if(args.length != 3){
             System.out.println("Usage: <update> <new-description>");
             return;
         }
-        System.out.println("Updated Successfully");
+        try{
+            boolean isDescriptionUpdated = taskManager.updateTaskDescription(args[1],args[2]);
+            if(!isDescriptionUpdated){
+                System.out.println("ID does not exist");
+            }else{
+                System.out.println("Description updated successfully");
+                listTasks();
+            }
+        }catch(NumberFormatException e){
+            System.out.println("Not a valid ID");
+        }
     }
 
     private void handleDelete() {
@@ -52,7 +65,6 @@ public class ConsoleUI {
             }
         } catch (NumberFormatException e) {
             System.err.println("Not a valid ID");
-            e.printStackTrace();
         }
     }
 
@@ -61,8 +73,17 @@ public class ConsoleUI {
             System.out.println("Usage: <mark-in-progress> <id>");
             return;
         }
-
-        System.out.println("MARK-IN-PROGRESS");
+        try {
+            boolean isStatusUpdated = taskManager.taskInProgress(args[1]);
+            if (!isStatusUpdated) {
+                System.out.println("ID does not exist");
+            } else {
+                System.out.println("Task Updated Successfully");
+                listTasks();
+            }
+        }catch(NumberFormatException e){
+            System.out.println("Invalid ID");
+        }
     }
 
     private void handleMarkDone() {
@@ -70,11 +91,123 @@ public class ConsoleUI {
             System.out.println("Usage: <mark-done> <id>");
             return;
         }
-
-        System.out.println("MARK-DONE");
+        try {
+            boolean isStatusUpdated = taskManager.taskDone(args[1]);
+            if (!isStatusUpdated) {
+                System.out.println("ID does not exist");
+            } else {
+                System.out.println("Task Updated Successfully");
+                listTasks();
+            }
+        }catch(NumberFormatException e){
+            System.out.println("Invalid ID");
+        }
     }
 
-    private void listAllTasks() {
-        System.out.println("LIST ALL TASKS");
+    private void listTasks() {
+        ArrayList<Task> tasks = taskManager.getTaskList();
+        if(args.length == 1){
+            listAllTasks(tasks);
+            return;
+        }
+
+        if(args.length == 2 && args[1].equals("todo")){
+            listAllTodoTasks(tasks);
+            return;
+        }
+
+        if(args.length == 2 && args[1].equals("done")){
+            listAllDoneTasks(tasks);
+            return;
+        }
+
+        if(args.length == 2 && args[1].equals("in-progress")){
+            listAllInProgressTasks(tasks);
+            return;
+        }
+
+        System.out.println("Usage: <list>");
+        System.out.println("Usage: <list> <todo>");
+        System.out.println("Usage: <list> <done>");
+        System.out.println("Usage: <list> <in-progress>");
+
     }
+
+    private void listAllTasks(ArrayList<Task> tasks){
+        if(tasks.isEmpty()){
+            System.out.println("No task has been created yet.");
+            return;
+        }
+
+        for(Task task : tasks){
+            System.out.println("\n----------");
+            System.out.println("ID: "+task.getId());
+            System.out.println("Description: "+task.getDescription());
+            System.out.println("Status: "+task.getStatus());
+            System.out.println("Created at: "+task.getCreatedAt());
+            System.out.println("Last updated: "+task.getUpdatedAt());
+            System.out.println("----------");
+        }
+    }
+
+    private void listAllTodoTasks(ArrayList<Task> tasks) {
+        List<Task> todoTasks = tasks.stream()
+                .filter(task -> task.getStatus().equals("todo")).toList();
+
+        if(todoTasks.isEmpty()){
+            System.out.println("No pending task yet");
+            return;
+        }
+
+        for(Task task : todoTasks){
+            System.out.println("\n----------");
+            System.out.println("ID: "+task.getId());
+            System.out.println("Description: "+task.getDescription());
+            System.out.println("Status: "+task.getStatus());
+            System.out.println("Created at: "+task.getCreatedAt());
+            System.out.println("Last updated: "+task.getUpdatedAt());
+            System.out.println("----------");
+        }
+    }
+    private void listAllDoneTasks(ArrayList<Task> tasks){
+        List<Task> doneTasks = tasks.stream()
+                .filter(task -> task.getStatus().equals("done")).toList();
+
+        if(doneTasks.isEmpty()){
+            System.out.println("No task has been completed yet");
+            return;
+        }
+
+        for(Task task : doneTasks){
+            System.out.println("\n----------");
+            System.out.println("ID: "+task.getId());
+            System.out.println("Description: "+task.getDescription());
+            System.out.println("Status: "+task.getStatus());
+            System.out.println("Created at: "+task.getCreatedAt());
+            System.out.println("Last updated: "+task.getUpdatedAt());
+            System.out.println("----------");
+        }
+    }
+
+    private void listAllInProgressTasks(ArrayList<Task> tasks) {
+        List<Task> inProgressTasks = tasks.stream()
+                .filter(task -> task.getStatus().equals("in-progress")).toList();
+
+        if(inProgressTasks.isEmpty()){
+            System.out.println("No task has been started yet");
+            return;
+        }
+
+        for(Task task : inProgressTasks){
+            System.out.println("\n----------");
+            System.out.println("ID: "+task.getId());
+            System.out.println("Description: "+task.getDescription());
+            System.out.println("Status: "+task.getStatus());
+            System.out.println("Created at: "+task.getCreatedAt());
+            System.out.println("Last updated: "+task.getUpdatedAt());
+            System.out.println("----------");
+        }
+    }
+
+    public void saveTaskToJsonFile(){}
 }

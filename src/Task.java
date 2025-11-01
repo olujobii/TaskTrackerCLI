@@ -9,20 +9,28 @@ public class Task {
     private LocalDateTime updatedAt;
 
 
-    public Task(String description, String status) {
+    public Task(String description, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = ++count;
         this.description = description;
         this.status = status;
-//        this.createdAt = createdAt;
-//        this.updatedAt = updatedAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public int getId() {
         return id;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getStatus() {
