@@ -3,7 +3,7 @@ import app.ConsoleUI;
 public class Main {
     public static void main(String[] args) {
         if(args.length == 0) {
-            System.out.println("No argument passed");
+            System.out.println("No command found");
             return;
         }
 

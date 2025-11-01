@@ -25,7 +25,7 @@ class TaskManager {
         int index = id - 1;
         Task removeTask = taskList.get(index);
 
-        System.out.println("app.Task Deleted Successfully: "+removeTask.getDescription());
+        System.out.println("Task Deleted Successfully: "+removeTask.getDescription());
         taskList.remove(index);
         //Update task ID of others after removal
         for(int i = index ; i < taskList.size(); i ++){
