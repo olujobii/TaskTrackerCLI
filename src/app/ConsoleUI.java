@@ -204,15 +204,7 @@ public class ConsoleUI {
             return;
         }
 
-        for(Task task : tasks){
-            System.out.println("\n----------");
-            System.out.println("ID: "+task.getId());
-            System.out.println("Description: "+task.getDescription());
-            System.out.println("Status: "+task.getStatus());
-            System.out.println("Created at: "+task.getCreatedAt());
-            System.out.println("Last updated: "+task.getUpdatedAt());
-            System.out.println("----------");
-        }
+        loopSpecificTask(tasks);
     }
 
     private void listAllTodoTasks(ArrayList<Task> tasks) {
@@ -224,15 +216,7 @@ public class ConsoleUI {
             return;
         }
 
-        for(Task task : todoTasks){
-            System.out.println("\n----------");
-            System.out.println("ID: "+task.getId());
-            System.out.println("Description: "+task.getDescription());
-            System.out.println("Status: "+task.getStatus());
-            System.out.println("Created at: "+task.getCreatedAt());
-            System.out.println("Last updated: "+task.getUpdatedAt());
-            System.out.println("----------");
-        }
+        loopSpecificTask(todoTasks);
     }
     private void listAllDoneTasks(ArrayList<Task> tasks){
         List<Task> doneTasks = tasks.stream()
@@ -243,15 +227,7 @@ public class ConsoleUI {
             return;
         }
 
-        for(Task task : doneTasks){
-            System.out.println("\n----------");
-            System.out.println("ID: "+task.getId());
-            System.out.println("Description: "+task.getDescription());
-            System.out.println("Status: "+task.getStatus());
-            System.out.println("Created at: "+task.getCreatedAt());
-            System.out.println("Last updated: "+task.getUpdatedAt());
-            System.out.println("----------");
-        }
+        loopSpecificTask(doneTasks);
     }
 
     private void listAllInProgressTasks(ArrayList<Task> tasks) {
@@ -263,7 +239,11 @@ public class ConsoleUI {
             return;
         }
 
-        for(Task task : inProgressTasks){
+        loopSpecificTask(inProgressTasks);
+    }
+
+    private void loopSpecificTask(List<Task> tasks){
+        for(Task task : tasks){
             System.out.println("\n----------");
             System.out.println("ID: "+task.getId());
             System.out.println("Description: "+task.getDescription());
@@ -273,7 +253,6 @@ public class ConsoleUI {
             System.out.println("----------");
         }
     }
-
     public void saveTaskToJsonFile(){
         ArrayList<Task> taskList = taskManager.getTaskList();
 
