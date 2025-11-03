@@ -28,7 +28,7 @@ javac Main.java
 
 4. Run the program
 ```bash
-java Main.java <command> [argument]
+java Main <command> [argument]
 ```
 
 ## Usage
